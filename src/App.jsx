@@ -26,7 +26,7 @@ const HomePage = () => {
 
 function App() {
   return (
-    <BrowserRouter basename="/Amazon-Clone">
+    <BrowserRouter basename="/">
       <div className="app">
         <Header />
         <Routes>
