@@ -32,7 +32,7 @@ app.post('/create-checkout-session', async (req, res) => {
       }],
     mode: 'payment',
     success_url: `${YOUR_DOMAIN}/success`,
-    cancel_url: `${YOUR_DOMAIN}/checkout`,
+    cancel_url: `${YOUR_DOMAIN}/Amazon-Clone/checkout`,
   });
 res.json({ sessionUrl: session.url });
 });
@@ -54,7 +54,7 @@ app.post("/single-product-checkout" , async(req,res) => {
           }],
         mode: 'payment',
         success_url: `${YOUR_DOMAIN}/success`,
-        cancel_url: `${YOUR_DOMAIN}/product/${req.body.id}`,
+        cancel_url: `${YOUR_DOMAIN}/Amazon-Clone/product/${req.body.id}`,
       });
     res.json({ sessionUrl: session.url });
 })

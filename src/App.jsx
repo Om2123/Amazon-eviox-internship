@@ -1,19 +1,36 @@
 import "./App.css";
+import React from "react";
+import { Provider } from 'react-redux'
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
-import Login from "./compo/Login";
-import Header from "./compo/Header";
-import React from "react";
-import Checkout from "./compo/Checkout";
-import Home from "./compo/Home";
-import Foot from "./compo/Foot";
-import Subtotal from "./compo/Subtotal";
+// auth
+import Login from "./compo/login/Login";
+import Register from "./compo/register/Register";
+// home page or landing page
+import Home from "./compo/home/Home";
+import Header from "./compo/home/navbar/Header";
+// cart
+import Subtotal from "./compo/cart/Subtotal";
+import Checkout from "./compo/cart/Checkout";
+// 404
 import Notfound from "./compo/NotFound/Notfound";
-import Orders from "./compo/Orders";
-import Register from "./compo/Register";
+// profile and orders
+import Orders from "./compo/ordersAndProfile/Orders";
+// indivisual product page
 import ProductDetail from "./compo/product/ProductDetail";
+// footer and the unimp
+import Foot from "./compo/Foot";
 
-const HomePage = () => {
+import { store } from './States/store'
+// adding css
+import "./styles/Home.css"
+import "./styles/Product.css"
+import "./styles/AddButton.css"
+import "./styles/Checkout.css"
+import "./styles/CheckoutProduct.css"
+
+
+const cart = () => {
   return (
     <React.Fragment>
       <Checkout />
@@ -22,25 +39,25 @@ const HomePage = () => {
   );
 };
 
-
-
 function App() {
   return (
-    <BrowserRouter basename="/">
-      <div className="app">
-        <Header />
-        <Routes>
-          {/* Home Page Route */}
-          <Route path="/login" Component={Login} />
-          <Route path="/register" Component={Register} />
-          <Route path="/product/:id" Component={ProductDetail} />
-          <Route path="/checkout" Component={HomePage}></Route>
-          <Route path="/" Component={Home}></Route>
-          <Route path="/*" Component={Notfound}></Route>
-          <Route path="/orders" Component={Orders}></Route>
-        </Routes>
-        <Foot />
-      </div>
+    <BrowserRouter >
+      <Provider store={store}>
+        <div className="app">
+          <Header />
+          <Routes>
+            {/* Home Page Route */}
+            <Route path="/login" Component={Login} />
+            <Route path="/register" Component={Register} />
+            <Route path="/product/:id" Component={ProductDetail} />
+            <Route path="/checkout" Component={cart}></Route>
+            <Route path="/" Component={Home}></Route>
+            <Route path="/*" Component={Notfound}></Route>
+            <Route path="/orders" Component={Orders}></Route>
+          </Routes>
+          <Foot />
+        </div>
+      </Provider>
     </BrowserRouter>
   );
 }

@@ -1,10 +1,12 @@
 import React from "react";
-import "../styles/Subtotal.css";
-import { useStateValue } from "../States/StateProvider";
-import axios from "axios";
+ import axios from "axios";
+import { useSelector } from "react-redux";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { addOrder } from "../../firebase/orderDb";
 
 function Subtotal() {
-  const [{ basket }] = useStateValue();
+  const basket = useSelector((state) => state.counter.basket)
+  const [user, setUser] = React.useState(null);
   const sumOfBasket = basket.reduce((sum, product) => parseInt(sum) + parseInt(product.price), 0);
   const handleCheckout = () => {
     axios.post('http://localhost:4242/create-checkout-session', { basket, sumOfBasket }, {
@@ -22,12 +24,20 @@ function Subtotal() {
       .catch(error => {
         // Handle any errors that occurred during the request.
         console.error('Error:', error);
+        alert(error.message, " make sure express is running")
       });
+    const auth = getAuth();
+
+    onAuthStateChanged(auth, (authUser) => {
+      setUser(authUser);
+    });
+    addOrder({ email: user.email, basket, sumOfBasket }).catch((e) => console.log(e.message))
+
   }
   return (
     <div className="flex flex-col items-center py-4 border border-gray-300 rounded-md">
       <h4 className="text-xl mb-4">
-        Subtotal {basket.length} item: {sumOfBasket} rs
+        Subtotal : {basket.length} item:  {sumOfBasket} RS
       </h4>
 
       {basket.length !== 0 ? (
@@ -53,4 +63,3 @@ function Subtotal() {
 
 
 export default Subtotal;
- 

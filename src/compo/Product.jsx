@@ -1,46 +1,51 @@
 import React from "react";
-import "../styles/AddButton.css";
-import "../styles/Product.css";
-import { useStateValue } from "../States/StateProvider";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToBasket } from "../States/feat/cart/basketSlice";
 
 function Product({ id, title, image, price, rating }) {
-  const [dispatch] = useStateValue();
-  // console.log(basket);
-  const addToBasket = () => {
+  const dispatch = useDispatch()
+
+  const addToBaskets = () => {
     //dispatch item to data layer
 
-    dispatch({
-      type: "ADD_TO_BASKET",
-      item: {
-        id: id,
-        title: title,
-        image: image,
-        price: price,
-        rating: rating,
-      },
-    });
+    dispatch(addToBasket({
+      id: id,
+      image: image,
+      title: title,
+      price: price,
+      rating: rating,
+    }))
+
   };
   return (
-    <Link to={`/product/${id}`}  className="product" >
-      <div className="product__info">
-        <p>{title}</p>
-        <p className="product__price">
-          <small>₹</small>
-          <strong>{price}</strong>
-        </p>
-        <div className="product__rating">
-          <p >🌟🌟🌟</p>
+    <div className="relative flex flex-col m-5 bg-white z-30 p-10 growing-hover">
+      <Link to={`/product/${id}`}>
+
+        <img src={image} className=" w-72 object-contain" />
+        <h4 className="my-3">{title}</h4>
+        <div className="flex">
+          {Array(rating)
+            .fill()
+            .map((_, i) => (
+              <>*</>
+            ))}
         </div>
+      </Link>
+
+      {/* <p className="text-xs my-2 line-clamp-2">{description}</p> */}
+
+      <div className="mb-5">
+        {/* <Currency quantity={price * 71} currency="INR" />
+         */}
+        {price} Rs
       </div>
-      <img src={image} alt="canva" />
 
-      <button className="add-to-cart-button" onClick={addToBasket}>
-        <span>Add to Cart</span>
+
+      <button className="mt-auto button" onClick={addToBaskets}>
+        Add to basket
       </button>
-
-
-    </Link>
+    </div>
   );
 }
 
